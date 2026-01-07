@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Prep Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .verification {
+            display: none;
+        }
+
+        .verification-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .verification-info h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            margin-bottom: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .item-content {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .item-link {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .item-link:hover {
+            text-decoration: underline;
+        }
+
+        .download-section {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group .btn {
+            flex: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Contact Leads Section Styles */
+        .contact-leads-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #e0e0e0;
+        }
+
+        .contact-leads-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .contact-leads-section small {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .contact-input-group {
+            display: grid;
+            grid-template-columns: 2fr 2fr 3fr auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: end;
+        }
+
+        .contact-input-group input {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .contact-list {
+            margin-top: 15px;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .contact-item-info {
+            flex: 1;
+        }
+
+        .contact-item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .contact-item-details {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-remove {
+            background: #dc3545;
+            padding: 8px 12px;
+            font-size: 13px;
+            width: auto;
+        }
+
+        .btn-remove:hover {
+            background: #c82333;
+        }
+
+        .btn-add {
+            background: #28a745;
+            width: auto;
+            padding: 10px 16px;
+        }
+
+        .btn-add:hover {
+            background: #218838;
+        }
+
+        .contact-empty-state {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Demo Prep Tool</h1>
+            <p>Generate comprehensive demo preparation documents by researching companies</p>
+        </div>
+
+        <!-- Initial Form -->
+        <div class="card" id="initialForm">
+            <h2 style="margin-bottom: 20px; color: #333;">Company Research</h2>
+
+            <div id="errorAlert" class="alert alert-error hidden"></div>
+
+            <div class="form-group">
+                <label for="domain">Company Domain *</label>
+                <input type="text" id="domain" placeholder="example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="companyName">Company Name (Optional)</label>
+                <input type="text" id="companyName" placeholder="e.g., Epic Systems">
+                <small style="color: #666;">Helps disambiguate companies with common names</small>
+            </div>
+
+            <div class="form-group">
+                <label for="companyContext">Company Context (Optional)</label>
+                <textarea id="companyContext" placeholder="e.g., healthcare software, Verona Wisconsin"></textarea>
+                <small style="color: #666;">Industry, location, or other details to improve search accuracy</small>
+            </div>
+
+            <!-- Contact Leads Section -->
+            <div class="contact-leads-section">
+                <h3>Contact Leads (Optional)</h3>
+                <small style="color: #666;">
+                    Add contacts you'd like to track. We'll search LinkedIn for their profiles.
+                </small>
+
+                <div class="contact-input-group">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" id="contactName" placeholder="Name *">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" id="contactTitle" placeholder="Title">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="email" id="contactEmail" placeholder="Email">
+                    </div>
+                    <button class="btn btn-add btn-small" type="button" onclick="addContact()">+ Add</button>
+                </div>
+
+                <div class="contact-list" id="contactList">
+                    <div class="contact-empty-state" id="contactEmptyState">
+                        No contacts added yet
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="startResearch()">Start Research</button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="card loading" id="loadingCard">
+            <div class="spinner"></div>
+            <p style="text-align: center; color: #666;">Gathering initial company information...</p>
+        </div>
+
+        <!-- Verification Step -->
+        <div class="card verification" id="verificationCard">
+            <h2 style="margin-bottom: 20px; color: #333;">🔍 Company Verification</h2>
+
+            <div class="verification-info">
+                <div class="info-item">
+                    <span class="info-label">Company Name:</span>
+                    <span class="info-value" id="verifyCompanyName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Domain:</span>
+                    <span class="info-value" id="verifyDomain"></span>
+                </div>
+                <div class="info-item" id="verifyContextItem" style="display: none;">
+                    <span class="info-label">Context:</span>
+                    <span class="info-value" id="verifyContext"></span>
+                </div>
+                <div class="info-item" id="verifyWebsiteItem">
+                    <span class="info-label">Website Title:</span>
+                    <span class="info-value" id="verifyWebsiteTitle"></span>
+                </div>
+                <div class="info-item" id="verifyDescItem">
+                    <span class="info-label">Description:</span>
+                    <span class="info-value" id="verifyDescription"></span>
+                </div>
+                <div class="info-item" id="verifyLinkedInItem" style="display: none;">
+                    <span class="info-label">LinkedIn:</span>
+                    <a href="#" id="verifyLinkedInUrl" class="item-link" target="_blank"></a>
+                    <p class="info-value" id="verifyLinkedInSnippet" style="margin-top: 8px; font-size: 0.9em;"></p>
+                </div>
+            </div>
+
+            <div style="background: #fff3cd; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                <strong>❓ Is this the correct company you want to research?</strong>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalContext">Add or Update Context (Optional)</label>
+                <textarea id="additionalContext" placeholder="Add more context to refine the search..."></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-danger" onclick="abortResearch()">❌ No, Abort</button>
+                <button class="btn btn-success" onclick="continueResearch()">✅ Yes, Continue</button>
+            </div>
+        </div>
+
+        <!-- Deep Research Loading -->
+        <div class="card loading" id="deepLoadingCard">
+            <div class="spinner"></div>
+            <p style="text-align: center; color: #666;">Conducting deep research...</p>
+            <p style="text-align: center; color: #999; font-size: 0.9em; margin-top: 10px;">
+                Searching tech stack, security tools, and vendor connections...
+            </p>
+        </div>
+
+        <!-- Results -->
+        <div class="card results" id="resultsCard">
+            <h2 style="margin-bottom: 20px; color: #333;">📊 Research Results</h2>
+
+            <div id="successAlert" class="alert alert-success">
+                Research completed successfully!
+            </div>
+
+            <!-- Contact Leads Section (First in Results) -->
+            <div class="section" id="contactLeadsSection" style="display: none;">
+                <h3>Contact Leads</h3>
+                <div id="contactLeads"></div>
+            </div>
+
+            <div class="section">
+                <h3>Company Overview</h3>
+                <div id="companyOverview"></div>
+            </div>
+
+            <div class="section">
+                <h3>Technology Stack</h3>
+                <div id="techStack"></div>
+            </div>
+
+            <div class="section">
+                <h3>Security Vendor Connections</h3>
+                <div id="securityVendors"></div>
+            </div>
+
+            <div class="section">
+                <h3>Security Leadership</h3>
+                <div id="securityLeadership"></div>
+            </div>
+
+            <div class="section">
+                <h3>Executive Leadership</h3>
+                <div id="executiveLeadership"></div>
+            </div>
+
+            <div class="download-section">
+                <h3 style="margin-bottom: 15px;">📥 Download Reports</h3>
+                <button class="btn download-btn" id="downloadMarkdown" style="width: auto;">
+                    Download Markdown
+                </button>
+                <button class="btn download-btn" id="downloadPdf" style="width: auto;">
+                    Download PDF
+                </button>
+            </div>
+
+            <button class="btn btn-secondary" style="margin-top: 20px;" onclick="resetForm()">
+                Research Another Company
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentFiles = null;
+        let contacts = [];
+
+        // Contact management functions
+        function addContact() {
+            const nameInput = document.getElementById('contactName');
+            const titleInput = document.getElementById('contactTitle');
+            const emailInput = document.getElementById('contactEmail');
+
+            const name = nameInput.value.trim();
+            const title = titleInput.value.trim();
+            const email = emailInput.value.trim();
+
+            // Validate name (required)
+            if (!name) {
+                showError('Contact name is required');
+                nameInput.focus();
+                return;
+            }
+
+            // Validate email format if provided
+            if (email && !isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                emailInput.focus();
+                return;
+            }
+
+            // Add to contacts array
+            const contact = {
+                name: name,
+                title: title || '',
+                email: email || ''
+            };
+
+            contacts.push(contact);
+
+            // Clear inputs
+            nameInput.value = '';
+            titleInput.value = '';
+            emailInput.value = '';
+            nameInput.focus();
+
+            // Re-render contact list
+            renderContactList();
+            hideError();
+        }
+
+        function removeContact(index) {
+            contacts.splice(index, 1);
+            renderContactList();
+        }
+
+        function renderContactList() {
+            const contactList = document.getElementById('contactList');
+            const emptyState = document.getElementById('contactEmptyState');
+
+            if (contacts.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            let html = '';
+            contacts.forEach((contact, index) => {
+                html += `
+                    <div class="contact-item">
+                        <div class="contact-item-info">
+                            <div class="contact-item-name">${escapeHtml(contact.name)}</div>
+                            <div class="contact-item-details">
+                                ${contact.title ? escapeHtml(contact.title) : '<em>No title</em>'}
+                                ${contact.email ? ' • ' + escapeHtml(contact.email) : ''}
+                            </div>
+                        </div>
+                        <button class="btn btn-remove btn-small" onclick="removeContact(${index})">Remove</button>
+                    </div>
+                `;
+            });
+
+            contactList.innerHTML = html;
+        }
+
+        function isValidEmail(email) {
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function startResearch() {
+            const domain = document.getElementById('domain').value.trim();
+            const companyName = document.getElementById('companyName').value.trim();
+            const companyContext = document.getElementById('companyContext').value.trim();
+
+            if (!domain) {
+                showError('Please enter a company domain');
+                return;
+            }
+
+            // Hide form, show loading
+            document.getElementById('initialForm').style.display = 'none';
+            document.getElementById('loadingCard').style.display = 'block';
+            hideError();
+
+            try {
+                const response = await fetch('/api/research', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        domain: domain,
+                        company_name: companyName,
+                        company_context: companyContext,
+                        contact_leads: contacts
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Research failed');
+                }
+
+                // Show verification
+                showVerification(result.data);
+
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('loadingCard').style.display = 'none';
+                document.getElementById('initialForm').style.display = 'block';
+            }
+        }
+
+        function showVerification(data) {
+            document.getElementById('loadingCard').style.display = 'none';
+
+            // Populate verification data
+            document.getElementById('verifyCompanyName').textContent = data.company_name;
+            document.getElementById('verifyDomain').textContent = data.domain;
+
+            if (data.context) {
+                document.getElementById('verifyContextItem').style.display = 'block';
+                document.getElementById('verifyContext').textContent = data.context;
+            }
+
+            if (data.website_info?.title) {
+                document.getElementById('verifyWebsiteTitle').textContent = data.website_info.title;
+            }
+
+            if (data.website_info?.description) {
+                document.getElementById('verifyDescription').textContent = data.website_info.description;
+            }
+
+            if (data.company_info?.linkedin) {
+                document.getElementById('verifyLinkedInItem').style.display = 'block';
+                const linkedInUrl = data.company_info.linkedin.url;
+                document.getElementById('verifyLinkedInUrl').href = linkedInUrl;
+                document.getElementById('verifyLinkedInUrl').textContent = linkedInUrl;
+                document.getElementById('verifyLinkedInSnippet').textContent = data.company_info.linkedin.snippet;
+            }
+
+            document.getElementById('verificationCard').style.display = 'block';
+        }
+
+        async function continueResearch() {
+            const additionalContext = document.getElementById('additionalContext').value.trim();
+
+            document.getElementById('verificationCard').style.display = 'none';
+            document.getElementById('deepLoadingCard').style.display = 'block';
+
+            try {
+                const response = await fetch('/api/continue', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        context: additionalContext
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Research continuation failed');
+                }
+
+                // Show results
+                showResults(result);
+
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('deepLoadingCard').style.display = 'none';
+                document.getElementById('verificationCard').style.display = 'block';
+            }
+        }
+
+        function showResults(data) {
+            document.getElementById('deepLoadingCard').style.display = 'none';
+
+            currentFiles = data.files;
+
+            // Contact Leads (First section)
+            const contactLeadsSection = document.getElementById('contactLeadsSection');
+            const contactLeadsDiv = document.getElementById('contactLeads');
+
+            if (data.data.contact_leads && data.data.contact_leads.length > 0) {
+                contactLeadsSection.style.display = 'block';
+                let contactsHtml = '';
+                data.data.contact_leads.forEach(contact => {
+                    contactsHtml += `<div class="item">
+                        <div class="item-title">${contact.name}</div>
+                        <div class="item-content">
+                            ${contact.title ? `<strong>Title:</strong> ${contact.title}<br>` : ''}
+                            ${contact.email ? `<strong>Email:</strong> <a href="mailto:${contact.email}" class="item-link">${contact.email}</a><br>` : ''}
+                            ${contact.linkedin_url ? `<strong>LinkedIn:</strong> <a href="${contact.linkedin_url}" class="item-link" target="_blank">${contact.linkedin_url}</a><br>` : ''}
+                            ${contact.linkedin_snippet ? `<br><em>${contact.linkedin_snippet}</em>` : ''}
+                            ${!contact.title && !contact.email && !contact.linkedin_url ? '<em>No additional details</em>' : ''}
+                        </div>
+                    </div>`;
+                });
+                contactLeadsDiv.innerHTML = contactsHtml;
+            } else {
+                contactLeadsSection.style.display = 'none';
+            }
+
+            // Company Overview
+            let overview = '';
+            if (data.data.website_info?.title) {
+                overview += `<div class="item"><div class="item-title">Website</div><div class="item-content">${data.data.website_info.title}</div></div>`;
+            }
+            if (data.data.website_info?.description) {
+                overview += `<div class="item"><div class="item-title">Description</div><div class="item-content">${data.data.website_info.description}</div></div>`;
+            }
+            if (data.data.company_info?.linkedin) {
+                overview += `<div class="item"><div class="item-title">LinkedIn</div><div class="item-content"><a href="${data.data.company_info.linkedin.url}" class="item-link" target="_blank">${data.data.company_info.linkedin.url}</a><br><br>${data.data.company_info.linkedin.snippet}</div></div>`;
+            }
+            document.getElementById('companyOverview').innerHTML = overview || '<p>No information found</p>';
+
+            // Tech Stack
+            let techStack = '';
+            if (data.data.tech_stack && data.data.tech_stack.length > 0) {
+                data.data.tech_stack.forEach(tech => {
+                    techStack += `<div class="item">
+                        <div class="item-title">${tech.technology}</div>
+                        <div class="item-content">
+                            <strong>Source:</strong> <a href="${tech.source}" class="item-link" target="_blank">${tech.source}</a><br>
+                            <strong>Context:</strong> ${tech.context}
+                        </div>
+                    </div>`;
+                });
+            } else {
+                techStack = '<p>No tech stack information found</p>';
+            }
+            document.getElementById('techStack').innerHTML = techStack;
+
+            // Security Vendors
+            let vendors = '';
+            if (data.data.security_vendors && data.data.security_vendors.length > 0) {
+                vendors += `<p style="margin-bottom: 15px;"><strong>Found ${data.data.security_vendors.length} vendor connection(s)</strong></p>`;
+                data.data.security_vendors.forEach(vendor => {
+                    vendors += `<div class="item">
+                        <div class="item-title">${vendor.vendor}</div>
+                        <div class="item-content">
+                            <strong>Source:</strong> <a href="${vendor.source}" class="item-link" target="_blank">${vendor.title}</a><br>
+                            <strong>Context:</strong> ${vendor.context}
+                        </div>
+                    </div>`;
+                });
+            } else {
+                vendors = '<p>No vendor connections found</p>';
+            }
+            document.getElementById('securityVendors').innerHTML = vendors;
+
+            // Security Leadership
+            let securityLeadership = '';
+            if (data.data.security_leadership && data.data.security_leadership.length > 0) {
+                data.data.security_leadership.forEach(person => {
+                    securityLeadership += `<div class="item">
+                        <div class="item-title">${person.name}</div>
+                        <div class="item-content">
+                            <strong>Title:</strong> ${person.title}<br>
+                            <strong>LinkedIn:</strong> <a href="${person.linkedin_url}" class="item-link" target="_blank">${person.linkedin_url}</a>
+                        </div>
+                    </div>`;
+                });
+            } else {
+                securityLeadership = '<p>No security leadership information found</p>';
+            }
+            document.getElementById('securityLeadership').innerHTML = securityLeadership;
+
+            // Executive Leadership
+            let executiveLeadership = '';
+            if (data.data.executive_leadership && data.data.executive_leadership.length > 0) {
+                data.data.executive_leadership.forEach(person => {
+                    executiveLeadership += `<div class="item">
+                        <div class="item-title">${person.name}</div>
+                        <div class="item-content">
+                            <strong>Title:</strong> ${person.title}<br>
+                            <strong>LinkedIn:</strong> <a href="${person.linkedin_url}" class="item-link" target="_blank">${person.linkedin_url}</a>
+                        </div>
+                    </div>`;
+                });
+            } else {
+                executiveLeadership = '<p>No executive leadership information found</p>';
+            }
+            document.getElementById('executiveLeadership').innerHTML = executiveLeadership;
+
+            // Setup download buttons
+            document.getElementById('downloadMarkdown').onclick = () => downloadFile(currentFiles.markdown);
+            document.getElementById('downloadPdf').onclick = () => downloadFile(currentFiles.pdf);
+
+            document.getElementById('resultsCard').style.display = 'block';
+        }
+
+        function downloadFile(filename) {
+            window.location.href = `/api/download/${filename}`;
+        }
+
+        function abortResearch() {
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('verificationCard').style.display = 'none';
+            document.getElementById('resultsCard').style.display = 'none';
+            document.getElementById('initialForm').style.display = 'block';
+            document.getElementById('domain').value = '';
+            document.getElementById('companyName').value = '';
+            document.getElementById('companyContext').value = '';
+            document.getElementById('additionalContext').value = '';
+
+            // Reset contacts
+            contacts = [];
+            renderContactList();
+
+            hideError();
+        }
+
+        function showError(message) {
+            const errorAlert = document.getElementById('errorAlert');
+            errorAlert.textContent = message;
+            errorAlert.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('errorAlert').classList.add('hidden');
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('domain').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                startResearch();
+            }
+        });
+        // Allow Enter key to add contact
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactInputs = ['contactName', 'contactTitle', 'contactEmail'];
+            contactInputs.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addContact();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
