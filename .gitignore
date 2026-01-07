@@ -36,6 +36,11 @@ ENV/
 
 # Output files
 *_demo_prep.md
+*.pdf
+web_outputs/
+*.md
+!README.md
+!docs/*.md
 
 # Environment variables
 .env
@@ -43,3 +48,16 @@ ENV/
 # Google API credentials
 credentials.json
 token.json
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Server files
+.server.pid
+server.log
+nohup.out
+
+# Thumbnails
+._*
