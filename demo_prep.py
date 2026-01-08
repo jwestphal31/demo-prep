@@ -821,14 +821,14 @@ class MarkdownGenerator:
 
         # Table of Contents
         md_content.append("## 📑 Table of Contents\n\n")
-        md_content.append("1. [Company Overview](#company-overview)\n")
-        md_content.append("2. [Company Information](#company-information)\n")
+        md_content.append("1. Company Overview\n")
+        md_content.append("2. Company Information\n")
         if data.get('contact_leads'):
-            md_content.append("3. [Contact Leads](#contact-leads)\n")
-        md_content.append("4. [Security Leadership](#security-leadership)\n")
-        md_content.append("5. [Executive Leadership](#executive-leadership)\n")
-        md_content.append("6. [Technology Stack](#technology-stack)\n")
-        md_content.append("7. [Security Vendor Connections](#security-vendor-connections)\n")
+            md_content.append("3. Contact Leads\n")
+        md_content.append("4. Security Leadership\n")
+        md_content.append("5. Executive Leadership\n")
+        md_content.append("6. Technology Stack\n")
+        md_content.append("7. Security Vendor Connections\n")
         md_content.append("\n---\n")
 
         # Company Overview
