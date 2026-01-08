@@ -15,36 +15,52 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 30px 20px;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-in;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2.8em;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
             background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
@@ -178,33 +194,66 @@
         }
 
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #fafbfc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
         }
 
         .section h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e0e0e0;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e0e6ed;
+            font-size: 1.4em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
         }
 
         .item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e8eaed;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
         }
 
         .item-title {
             font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            font-size: 1.05em;
         }
 
         .item-content {
-            color: #666;
+            color: #555;
             font-size: 0.95em;
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+
+        .item-content strong {
+            color: #333;
+            font-weight: 600;
         }
 
         .item-link {
@@ -218,16 +267,49 @@
         }
 
         .download-section {
-            background: #e7f3ff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0e7ff 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 2px solid #d0e7ff;
+        }
+
+        .download-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
         }
 
         .download-btn {
             display: inline-block;
-            margin-right: 10px;
+            margin-right: 15px;
             margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .contact-input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
         }
 
         .alert {
@@ -492,32 +574,32 @@
 
             <!-- Contact Leads Section (First in Results) -->
             <div class="section" id="contactLeadsSection" style="display: none;">
-                <h3>Contact Leads</h3>
+                <h3>👥 Contact Leads</h3>
                 <div id="contactLeads"></div>
             </div>
 
             <div class="section">
-                <h3>Company Overview</h3>
+                <h3>🏢 Company Overview</h3>
                 <div id="companyOverview"></div>
             </div>
 
             <div class="section">
-                <h3>Technology Stack</h3>
+                <h3>💻 Technology Stack</h3>
                 <div id="techStack"></div>
             </div>
 
             <div class="section">
-                <h3>Security Vendor Connections</h3>
+                <h3>🔐 Security Vendor Connections</h3>
                 <div id="securityVendors"></div>
             </div>
 
             <div class="section">
-                <h3>Security Leadership</h3>
+                <h3>🛡️ Security Leadership</h3>
                 <div id="securityLeadership"></div>
             </div>
 
             <div class="section">
-                <h3>Executive Leadership</h3>
+                <h3>👔 Executive Leadership</h3>
                 <div id="executiveLeadership"></div>
             </div>
 

@@ -814,25 +814,38 @@ class MarkdownGenerator:
         md_content = []
 
         # Title
-        md_content.append(f"# Demo Prep: {data['company_name']}")
-        md_content.append(f"\n**Domain:** {data['domain']}")
-        md_content.append(f"\n**Research Date:** {data['research_date']}")
+        md_content.append(f"# 🔍 Demo Prep: {data['company_name']}\n\n")
+        md_content.append(f"**Domain:** `{data['domain']}`  \n")
+        md_content.append(f"**Research Date:** {data['research_date']}\n\n")
+        md_content.append("---\n\n")
+
+        # Table of Contents
+        md_content.append("## 📑 Table of Contents\n\n")
+        md_content.append("1. [Company Overview](#company-overview)\n")
+        md_content.append("2. [Company Information](#company-information)\n")
+        if data.get('contact_leads'):
+            md_content.append("3. [Contact Leads](#contact-leads)\n")
+        md_content.append("4. [Security Leadership](#security-leadership)\n")
+        md_content.append("5. [Executive Leadership](#executive-leadership)\n")
+        md_content.append("6. [Technology Stack](#technology-stack)\n")
+        md_content.append("7. [Security Vendor Connections](#security-vendor-connections)\n")
         md_content.append("\n---\n")
 
         # Company Overview
-        md_content.append("## Company Overview\n")
+        md_content.append("\n## 🏢 Company Overview\n\n")
         if data['website_info']:
             if 'title' in data['website_info']:
-                md_content.append(f"**Website Title:** {data['website_info']['title']}\n")
+                md_content.append(f"**Website Title:** {data['website_info']['title']}\n\n")
             if 'description' in data['website_info']:
-                md_content.append(f"**Description:** {data['website_info']['description']}\n")
+                md_content.append(f"**Description:**  \n{data['website_info']['description']}\n\n")
             if 'about' in data['website_info']:
-                md_content.append(f"\n**About:**\n{data['website_info']['about']}\n")
+                md_content.append(f"**About:**  \n{data['website_info']['about']}\n\n")
             if 'error' in data['website_info']:
-                md_content.append(f"\n*Note: Error accessing website - {data['website_info']['error']}*\n")
+                md_content.append(f"> ⚠️ *Note: Error accessing website - {data['website_info']['error']}*\n\n")
 
         # Company Information
-        md_content.append("\n## Company Information\n")
+        md_content.append("---\n\n")
+        md_content.append("## 📊 Company Information\n\n")
         if data['company_info']:
             company_info = data['company_info']
 
@@ -869,58 +882,68 @@ class MarkdownGenerator:
             md_content.append("*No additional company information available*\n")
 
         # Contact Leads
-        md_content.append("\n## Contact Leads\n")
+        md_content.append("---\n\n")
+        md_content.append("## 👥 Contact Leads\n\n")
         if data.get('contact_leads') and len(data['contact_leads']) > 0:
-            md_content.append("*Contacts to track for this demo preparation*\n\n")
-            for contact in data['contact_leads']:
-                md_content.append(f"### {contact['name']}\n")
+            md_content.append("> *Contacts to track for this demo preparation*\n\n")
+            for idx, contact in enumerate(data['contact_leads'], 1):
+                md_content.append(f"### {idx}. {contact['name']}\n\n")
+                details = []
                 if contact.get('title'):
-                    md_content.append(f"**Title:** {contact['title']}\n\n")
+                    details.append(f"**Title:** {contact['title']}")
                 if contact.get('email'):
-                    md_content.append(f"**Email:** [{contact['email']}](mailto:{contact['email']})\n\n")
+                    details.append(f"**Email:** [{contact['email']}](mailto:{contact['email']})")
                 if contact.get('linkedin_url'):
-                    md_content.append(f"**LinkedIn:** [{contact['linkedin_url']}]({contact['linkedin_url']})\n\n")
+                    details.append(f"**LinkedIn:** [{contact['linkedin_url']}]({contact['linkedin_url']})")
+
+                if details:
+                    md_content.append("  \n".join(details) + "\n\n")
+
                 if contact.get('linkedin_snippet'):
-                    md_content.append(f"*{contact['linkedin_snippet']}*\n\n")
+                    md_content.append(f"> *{contact['linkedin_snippet']}*\n\n")
+
                 if not contact.get('title') and not contact.get('email') and not contact.get('linkedin_url'):
-                    md_content.append("*No additional contact details*\n\n")
+                    md_content.append("> *No additional contact details*\n\n")
         else:
-            md_content.append("*No contact leads added*\n")
+            md_content.append("> *No contact leads added*\n\n")
 
         # Security Leadership
-        md_content.append("\n## Security Leadership\n")
+        md_content.append("---\n\n")
+        md_content.append("## 🛡️ Security Leadership\n\n")
         if data.get('search_enabled') == False:
-            md_content.append("*Web search not configured - enable search for stakeholder research*\n")
+            md_content.append("> ⚠️ *Web search not configured - enable search for stakeholder research*\n\n")
         elif data.get('security_leadership'):
             if len(data['security_leadership']) > 0:
-                for person in data['security_leadership']:
-                    md_content.append(f"\n### {person['name']}\n")
-                    md_content.append(f"**Title:** {person['title']}\n\n")
-                    md_content.append(f"**LinkedIn:** [{person['linkedin_url']}]({person['linkedin_url']})\n")
+                for idx, person in enumerate(data['security_leadership'], 1):
+                    md_content.append(f"### {idx}. {person['name']}\n\n")
+                    md_content.append(f"**Title:** {person['title']}  \n")
+                    md_content.append(f"**LinkedIn:** [{person['linkedin_url']}]({person['linkedin_url']})\n\n")
             else:
-                md_content.append("*No security leadership information found*\n")
+                md_content.append("> *No security leadership information found*\n\n")
         else:
-            md_content.append("*No security leadership information found*\n")
+            md_content.append("> *No security leadership information found*\n\n")
 
         # Executive Leadership
-        md_content.append("\n## Executive Leadership\n")
+        md_content.append("---\n\n")
+        md_content.append("## 👔 Executive Leadership\n\n")
         if data.get('search_enabled') == False:
-            md_content.append("*Web search not configured - enable search for stakeholder research*\n")
+            md_content.append("> ⚠️ *Web search not configured - enable search for stakeholder research*\n\n")
         elif data.get('executive_leadership'):
             if len(data['executive_leadership']) > 0:
-                for person in data['executive_leadership']:
-                    md_content.append(f"\n### {person['name']}\n")
-                    md_content.append(f"**Title:** {person['title']}\n\n")
-                    md_content.append(f"**LinkedIn:** [{person['linkedin_url']}]({person['linkedin_url']})\n")
+                for idx, person in enumerate(data['executive_leadership'], 1):
+                    md_content.append(f"### {idx}. {person['name']}\n\n")
+                    md_content.append(f"**Title:** {person['title']}  \n")
+                    md_content.append(f"**LinkedIn:** [{person['linkedin_url']}]({person['linkedin_url']})\n\n")
             else:
-                md_content.append("*No executive leadership information found*\n")
+                md_content.append("> *No executive leadership information found*\n\n")
         else:
-            md_content.append("*No executive leadership information found*\n")
+            md_content.append("> *No executive leadership information found*\n\n")
 
         # Tech Stack
-        md_content.append("\n## Technology Stack\n")
+        md_content.append("---\n\n")
+        md_content.append("## 💻 Technology Stack\n\n")
         if data.get('search_enabled') == False:
-            md_content.append("*Web search not configured - enable search for tech stack detection*\n")
+            md_content.append("> ⚠️ *Web search not configured - enable search for tech stack detection*\n\n")
         elif data['tech_stack']:
             seen = set()
             for item in data['tech_stack']:
@@ -928,36 +951,39 @@ class MarkdownGenerator:
                     tech = item['technology']
                     if tech not in seen:
                         seen.add(tech)
-                        md_content.append(f"- **{tech}**\n")
-                        md_content.append(f"  - Source: {item['source']}\n")
+                        md_content.append(f"### {tech}\n\n")
+                        md_content.append(f"**Source:** [{item['source']}]({item['source']})  \n")
                         if item.get('context'):
-                            md_content.append(f"  - Context: {item['context']}\n")
+                            md_content.append(f"**Context:** {item['context']}\n\n")
+                        else:
+                            md_content.append("\n")
                 else:
                     md_content.append(f"- {item}\n")
         else:
-            md_content.append("*No tech stack information found*\n")
+            md_content.append("> *No tech stack information found*\n\n")
 
         # Security Vendor Connections
-        md_content.append("\n## Security Vendor Connections\n")
-        md_content.append("*Verified connections with known security vendors*\n\n")
+        md_content.append("---\n\n")
+        md_content.append("## 🔐 Security Vendor Connections\n\n")
+        md_content.append("> *Verified connections with known security vendors*\n\n")
         if data.get('search_enabled') == False:
-            md_content.append("*Web search not configured - enable search for vendor detection*\n")
+            md_content.append("> ⚠️ *Web search not configured - enable search for vendor detection*\n\n")
         elif data.get('security_vendors'):
             vendors_found = data['security_vendors']
             if vendors_found:
-                md_content.append(f"Found {len(vendors_found)} vendor connection(s):\n\n")
-                for item in vendors_found:
-                    md_content.append(f"### {item['vendor']}\n")
-                    md_content.append(f"**Source:** [{item['title']}]({item['source']})\n\n")
+                md_content.append(f"**Found {len(vendors_found)} vendor connection(s)**\n\n")
+                for idx, item in enumerate(vendors_found, 1):
+                    md_content.append(f"### {idx}. {item['vendor']}\n\n")
+                    md_content.append(f"**Source:** [{item['title']}]({item['source']})  \n")
                     md_content.append(f"**Context:** {item['context']}\n\n")
             else:
-                md_content.append("*No vendor connections found*\n")
+                md_content.append("> *No vendor connections found*\n\n")
         else:
-            md_content.append("*No vendor connections found*\n")
+            md_content.append("> *No vendor connections found*\n\n")
 
-        # Battle Cards Section (placeholder for later)
-        md_content.append("\n## Competitive Battle Cards\n")
-        md_content.append("*Battle cards integration coming soon*\n")
+        # Footer
+        md_content.append("---\n\n")
+        md_content.append("*Research generated by Demo Prep Tool*\n")
 
         # Write to file
         with open(output_path, 'w', encoding='utf-8') as f:

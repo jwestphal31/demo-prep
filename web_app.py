@@ -6,11 +6,16 @@ Run locally with: python3 web_app.py
 
 from flask import Flask, render_template, request, jsonify, send_file, session
 import os
+import sys
 import secrets
 from datetime import datetime
+from pathlib import Path
+
+# Add scripts directory to path for imports
+sys.path.append(str(Path(__file__).parent / 'scripts'))
+
 from demo_prep import CompanyResearcher, WebSearcher, MarkdownGenerator
 from convert_to_pdf import parse_markdown_to_pdf
-from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
